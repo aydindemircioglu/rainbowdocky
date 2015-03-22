@@ -1,0 +1,14 @@
+#!/bin/sh
+
+SCRIPT_PATH=`dirname $0`
+SCRIPT_PATH=`cd $SCRIPT_PATH; pwd`
+
+if [ "x$SCRIPT_PATH" = "x/home/drunkeneye/Downloads/tmp/docky/Docky/bin/Debug" ] ||
+   [ "x$SCRIPT_PATH" = "x/home/drunkeneye/Downloads/tmp/docky/Docky" ] ; then
+    echo "*** Running uninstalled ***"
+    DOCKY_EXE="/home/drunkeneye/Downloads/tmp/docky/Docky/bin/Debug/Docky.exe"
+else
+    DOCKY_EXE="/usr/local/lib/docky/Docky.exe"
+fi
+
+exec mono  "$DOCKY_EXE"  "$@"
