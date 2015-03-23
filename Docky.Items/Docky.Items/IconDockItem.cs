@@ -123,6 +123,113 @@ namespace Docky.Items
 			OnIconUpdated ();
 			QueueRedraw ();
 		}
+
+		/// <summary>
+		/// Convert HSV to RGB
+		/// h is from 0-360
+		/// s,v values are 0-1
+		/// r,g,b values are 0-255
+		/// Based upon http://ilab.usc.edu/wiki/index.php/HSV_And_H2SV_Color_Space#HSV_Transformation_C_.2F_C.2B.2B_Code_2
+		/// </summary>
+		public void HsvToRgb(double h, double S, double V, out int r, out int g, out int b)
+		{    
+			double H = h;
+			while (H < 0) { H += 360; };
+			while (H >= 360) { H -= 360; };
+			double R, G, B;
+			if (V <= 0)
+				{ R = G = B = 0; }
+			else if (S <= 0)
+			{
+				R = G = B = V;
+			}
+			else
+			{
+				double hf = H / 60.0;
+				int i = (int)Math.Floor(hf);
+				double f = hf - i;
+				double pv = V * (1 - S);
+				double qv = V * (1 - S * f);
+				double tv = V * (1 - S * (1 - f));
+				switch (i)
+				{
+
+					// Red is the dominant color
+
+					case 0:
+						R = V;
+						G = tv;
+						B = pv;
+						break;
+
+					// Green is the dominant color
+
+					case 1:
+						R = qv;
+						G = V;
+						B = pv;
+						break;
+					case 2:
+						R = pv;
+						G = V;
+						B = tv;
+						break;
+
+					// Blue is the dominant color
+
+					case 3:
+						R = pv;
+						G = qv;
+						B = V;
+						break;
+					case 4:
+						R = tv;
+						G = pv;
+						B = V;
+						break;
+
+					// Red is the dominant color
+
+					case 5:
+						R = V;
+						G = pv;
+						B = qv;
+						break;
+
+					// Just in case we overshoot on our math by a little, we put these here. Since its a switch it won't slow us down at all to put these here.
+
+					case 6:
+						R = V;
+						G = tv;
+						B = pv;
+						break;
+					case -1:
+						R = V;
+						G = pv;
+						B = qv;
+						break;
+
+					// The color is not defined, we should throw an error.
+
+					default:
+						//LFATAL("i Value error in Pixel conversion, Value is %d", i);
+						R = G = B = V; // Just pretend its black/white
+						break;
+				}
+			}
+			r = Clamp((int)(R * 255.0));
+			g = Clamp((int)(G * 255.0));
+			b = Clamp((int)(B * 255.0));
+		}
+
+		public int Clamp(int i)
+		{
+			if (i < 0) return 0;
+			if (i > 255) return 255;
+			return i;
+		}
+
+		
 		
 		protected override void PaintIconSurface (DockySurface surface)
 		{			
@@ -147,39 +254,34 @@ namespace Docky.Items
 				int length = width * height;
 
 				// determine rainbow color
-				double myLastPosition = maxPosition;
-				double relPos = (double)(Position)/(double)myLastPosition;
-
-				double newColorR = 0;
-				double newColorG = 0;
-				double newColorB = 0;
-
-				// FIXME: do something with the saturation/intensity/value whatever
-				byte maxRGB = 229;
+				double curPosition = Position;
+				double myMaxPosition = maxPosition + 1;
 				
-				if (relPos < 0.2) {
-					newColorR = 0;
-					newColorG = (byte) Math.Round ( (relPos/0.2) * maxRGB);
-					newColorB = maxRGB;
-				} else if (relPos < 0.4) {
-					newColorR = 0;
-					newColorG = maxRGB;
-					newColorB = maxRGB - (byte) Math.Round ( ((relPos-0.2)/0.2) * maxRGB);
-				} else if (relPos < 0.6) {
-					newColorR = (byte) Math.Round ( ((relPos-0.4)/0.2) * maxRGB);
-					newColorG = maxRGB;
-					newColorB = 0;
-				} else if (relPos < 0.8) {
-					newColorR = maxRGB;
-					newColorG = maxRGB - (byte) Math.Round ( ((relPos-0.6)/0.2) * maxRGB);
-					newColorB = 0;
-				} else {
-					newColorR = maxRGB;
-					newColorG = 0;
-					newColorB = (byte) Math.Round ( ((relPos-0.8)/0.2) * maxRGB);
-				}
+				// we have one minor problem, the docky icon has always zero position.
+				Log<IconDockItem>.Info ("{0}", ShortName);
+				if (ShortName != "Docky") 
+					curPosition = curPosition + 1;
 				
-				Log<IconDockItem>.Info ("{0}, {1}, {2} for position {3} of {4}", newColorR, newColorG, newColorB, Position, maxPosition);
+				double relPos = curPosition/(double)myMaxPosition;
+
+				
+				int newColorR = 0;
+				int newColorG = 0;
+				int newColorB = 0;
+
+				// hue should go from 240 downto 0--360 downto 300
+				double hue = 240 - relPos*300; 
+				if (hue < 0)
+					hue = 360 + hue;
+				
+				
+				
+				double sat = 0.82;
+				double val = 0.75;
+				HsvToRgb(hue, sat, val, out newColorR, out newColorG, out newColorB);
+
+				
+				Log<IconDockItem>.Info ("{0}, {1}, {2} (hue {5}) for position {3} of {4}", newColorR, newColorG, newColorB, curPosition, myMaxPosition, hue);
 				
 				for (int i = 0; i < length; i++) {
 						

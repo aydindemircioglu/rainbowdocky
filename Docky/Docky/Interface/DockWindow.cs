@@ -293,8 +293,6 @@ namespace Docky.Interface
 						if (!provider.Items.Any ())
 							continue;
 							
-						Log<DockWindow>.Info ("Next Item now");
-						
 						if ((provider.Separated && priorItems) || separatorNeeded)
 							collection_backend.Add (new SeparatorItem ());
 					
