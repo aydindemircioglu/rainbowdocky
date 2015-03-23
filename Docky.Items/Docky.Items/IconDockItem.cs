@@ -263,25 +263,31 @@ namespace Docky.Items
 					curPosition = curPosition + 1;
 				
 				double relPos = curPosition/(double)myMaxPosition;
+				int[] hueMap =  {240, 210, 180, 110, 80, 60, 40, 20, 0,  -20, -40, -60, -80};
+				int hueMin = (int) Math.Floor(relPos*(hueMap.Length-2));
+				int hueMax = hueMin + 1;
+				double hueWeight = relPos*(hueMap.Length-2) - hueMin;
+				double hue = Math.Round (hueWeight * hueMap[hueMax] + (1 - hueWeight) * hueMap[hueMin]);
+// 				// hue should go from 240 downto 0--360 downto 300
+// 				double hue = 240 - relPos*300; 
+				Log<IconDockItem>.Info ("{0}, {1}, {2} of {3} ", relPos, hueMin, hueMax, hueMap.Length);
+				if (hue < 0)
+					hue = 360 + hue;
 
-				
+					
+				double[] satMap =  {0.82, 0.82, 0.82, 0.84, 0.88, 0.92, 0.94, 0.92, 0.88, 0.86, 0.84, 0.82, 0.82};
+				double sat = (hueWeight * satMap[hueMax] + (1 - hueWeight) * satMap[hueMin]);
+
+				double[] valMap =  {0.75, 0.75, 0.78, 0.84, 0.88, 0.92, 0.94, 0.92, 0.88, 0.78, 0.71, 0.66, 0.66};
+				double val = (hueWeight * valMap[hueMax] + (1 - hueWeight) * valMap[hueMin]);
+
 				int newColorR = 0;
 				int newColorG = 0;
 				int newColorB = 0;
-
-				// hue should go from 240 downto 0--360 downto 300
-				double hue = 240 - relPos*300; 
-				if (hue < 0)
-					hue = 360 + hue;
-				
-				
-				
-				double sat = 0.82;
-				double val = 0.75;
 				HsvToRgb(hue, sat, val, out newColorR, out newColorG, out newColorB);
 
 				
-				Log<IconDockItem>.Info ("{0}, {1}, {2} (hue {5}) for position {3} of {4}", newColorR, newColorG, newColorB, curPosition, myMaxPosition, hue);
+				Log<IconDockItem>.Info ("{0}, {1}, {2} (hue {5}, sat {6}, val {7}) for position {3} of {4}", newColorR, newColorG, newColorB, curPosition, myMaxPosition, hue, sat, val);
 				
 				for (int i = 0; i < length; i++) {
 						
