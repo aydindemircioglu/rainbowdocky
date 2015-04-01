@@ -124,6 +124,9 @@ namespace Docky.Items
 			QueueRedraw ();
 		}
 
+		
+	
+	
 		/// <summary>
 		/// Convert HSV to RGB
 		/// h is from 0-360
@@ -263,7 +266,7 @@ namespace Docky.Items
 					curPosition = curPosition + 1;
 				
 				double relPos = curPosition/(double)myMaxPosition;
-				int[] hueMap =  {240, 210, 180, 110, 80, 60, 40, 20, 0,  -20, -40, -60, -80};
+				int[] hueMap =  {240, 220, 190, 130, 80, 60, 40, 20, 0,  -20, -40, -60, -80};
 				int hueMin = (int) Math.Floor(relPos*(hueMap.Length-2));
 				int hueMax = hueMin + 1;
 				double hueWeight = relPos*(hueMap.Length-2) - hueMin;
@@ -296,7 +299,7 @@ namespace Docky.Items
 						whiteAlpha = whiteAlpha/(255 + 255);
 						
 				
-						if (whiteAlpha > 0.2) {
+						if (whiteAlpha > 0.19) {
 							pixels[0] = (byte) Math.Round(newColorR * whiteAlpha + 255  * (1.0 - whiteAlpha));
 							pixels[1] = (byte) Math.Round(newColorG * whiteAlpha + 255 * (1.0 - whiteAlpha));
 							pixels[2] = (byte) Math.Round(newColorB * whiteAlpha + 255  * (1.0 - whiteAlpha));
@@ -305,7 +308,7 @@ namespace Docky.Items
 							pixels[2] = (byte) newColorB;
 						}  else {
 							byte whitish = (byte) Math.Round ( 255 * (double) (pixels[0] + pixels[1] + pixels[2])/(double)(255*3) );
-							whitish = 255;
+//							whitish = 255;
 							pixels[0] = (byte) whitish;
 							pixels[1] = (byte) whitish;
 							pixels[2] = (byte) whitish;

@@ -215,8 +215,10 @@ namespace Docky.Items
 			}
 			set {
 				LastPosition = position;
-				if (value > maxPosition) 
+				if (value > maxPosition) {
+					// actually need all icons to be redrawn
 					maxPosition = value;
+				}
 				position = value;
 				SetStateTime (ItemState.Move, DateTime.UtcNow);
 			}
