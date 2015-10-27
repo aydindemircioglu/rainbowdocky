@@ -432,7 +432,7 @@ Copyright (C) 2012 Free Software Foundation, Inc.
 This config.status script is free software; the Free Software Foundation
 gives unlimited permission to copy, distribute and modify it."
 
-ac_pwd='/home/drunkeneye/Downloads/tmp/docky'
+ac_pwd='/home/drunkeneye/code/docky'
 srcdir='.'
 INSTALL='/usr/bin/install -c'
 MKDIR_P='/bin/mkdir -p'
@@ -738,9 +738,9 @@ S["GNOME_KEYRING_SHARP_LIBS"]="-r:/usr/lib/cli/Gnome.Keyring-1.0/Gnome.Keyring.d
 S["GNOME_KEYRING_SHARP_CFLAGS"]=""
 S["GKEYFILE_SHARP_LIBS"]="-r:/usr/lib/cli/gkeyfile-sharp-1.0/gkeyfile-sharp.dll -r:/usr/lib/pkgconfig/../../lib/cli/glib-sharp-2.0/glib-sharp.dll "
 S["GKEYFILE_SHARP_CFLAGS"]="-I:/usr/lib/pkgconfig/../../share/gapi-2.0/glib-api.xml "
-S["GIO_SHARP_ASSEMBLIES"]=" /home/drunkeneye/Downloads/tmp/docky//build/gio-sharp.dll /home/drunkeneye/Downloads/tmp/docky//build/gio-sharp.dll.config"
-S["GIO_SHARP_LIBS"]="-r:/usr/lib/pkgconfig/../../lib/gio-sharp/gio-sharp.dll -r:/usr/lib/pkgconfig/../../lib/cli/glib-sharp-2.0/glib-sharp.dll  -r:/home/drunkeneye/Downl"\
-"oads/tmp/docky//build/gio-sharp.dll"
+S["GIO_SHARP_ASSEMBLIES"]=" /home/drunkeneye/code/docky//build/gio-sharp.dll /home/drunkeneye/code/docky//build/gio-sharp.dll.config"
+S["GIO_SHARP_LIBS"]="-r:/usr/lib/pkgconfig/../../lib/gio-sharp/gio-sharp.dll -r:/usr/lib/pkgconfig/../../lib/cli/glib-sharp-2.0/glib-sharp.dll  -r:/home/drunkeneye/code/"\
+"docky//build/gio-sharp.dll"
 S["GIO_SHARP_CFLAGS"]="-I:/usr/lib/pkgconfig/../../share/gapi-2.0/gio-api.xml -I:/usr/lib/pkgconfig/../../share/gapi-2.0/glib-api.xml "
 S["GLIB_SHARP_20_LIBS"]="-r:/usr/lib/pkgconfig/../../lib/cli/glib-sharp-2.0/glib-sharp.dll "
 S["GLIB_SHARP_20_CFLAGS"]="-I:/usr/lib/pkgconfig/../../share/gapi-2.0/glib-api.xml "
@@ -875,12 +875,12 @@ S["mkdir_p"]="$(MKDIR_P)"
 S["MKDIR_P"]="/bin/mkdir -p"
 S["INSTALL_STRIP_PROGRAM"]="$(install_sh) -c -s"
 S["STRIP"]=""
-S["install_sh"]="${SHELL} /home/drunkeneye/Downloads/tmp/docky/install-sh"
-S["MAKEINFO"]="${SHELL} /home/drunkeneye/Downloads/tmp/docky/missing makeinfo"
-S["AUTOHEADER"]="${SHELL} /home/drunkeneye/Downloads/tmp/docky/missing autoheader"
-S["AUTOMAKE"]="${SHELL} /home/drunkeneye/Downloads/tmp/docky/missing automake-1.14"
-S["AUTOCONF"]="${SHELL} /home/drunkeneye/Downloads/tmp/docky/missing autoconf"
-S["ACLOCAL"]="${SHELL} /home/drunkeneye/Downloads/tmp/docky/missing aclocal-1.14"
+S["install_sh"]="${SHELL} /home/drunkeneye/code/docky/install-sh"
+S["MAKEINFO"]="${SHELL} /home/drunkeneye/code/docky/missing makeinfo"
+S["AUTOHEADER"]="${SHELL} /home/drunkeneye/code/docky/missing autoheader"
+S["AUTOMAKE"]="${SHELL} /home/drunkeneye/code/docky/missing automake-1.14"
+S["AUTOCONF"]="${SHELL} /home/drunkeneye/code/docky/missing autoconf"
+S["ACLOCAL"]="${SHELL} /home/drunkeneye/code/docky/missing aclocal-1.14"
 S["VERSION"]="2.2.1"
 S["PACKAGE"]="docky"
 S["CYGPATH_W"]="echo"

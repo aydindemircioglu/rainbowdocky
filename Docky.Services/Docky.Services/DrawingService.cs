@@ -134,21 +134,29 @@ namespace Docky.Services
 						break;
 				}
 				
-				if (IconIsFile (name)) {
-					pixbuf = IconFromFile (name, width, height);
-					if (pixbuf != null)
-						break;
-				}
+				
+				// ignore the shit, just load them directly?
+				pixbuf = IconFromLocalFileStash (name, width, height);
+				if (pixbuf != null)
+					break;
+// 				if (IconIsFile (name)) {
+// 					Log<DrawingService>.Info ("Icon {0} is file.", names);
+// 					pixbuf = IconFromFile (name, width, height);
+// 					if (pixbuf != null)
+// 						break;
+// 				}
 				
 				if (width <= 0 || height <= 0)
 					throw new ArgumentException ("Width / Height must be greater than 0 if icon is not a file or embedded resource");
 				
 				// Try to load icon from default theme.
+				Log<DrawingService>.Info ("Loading icon {0} from theme ", names);
 				pixbuf = IconFromTheme (name, Math.Max (width, height), IconTheme.Default);
 				if (pixbuf != null)
 					break;
 				
 				// Try to load a generic file icon.
+				Log<DrawingService>.Info ("Now its personal, {0}.", names);
 				if (name.StartsWith ("gnome-mime")) {
 					pixbuf = GenericFileIcon (Math.Max (width, height));
 					if (pixbuf != null)
@@ -329,6 +337,38 @@ namespace Docky.Services
 			}
 			return pixbuf;
 		}
+
+		Pixbuf IconFromLocalFileStash (string name, int width, int height)
+		{
+			// stupid chrome icons!!
+			if (name.Contains ("chrome"))
+				name = "chrome";
+
+			// stupid chrome icons!!
+			if (name.Contains ("Telegram"))
+				name = "unity-webapps-telegram";
+				
+				
+			Pixbuf pixbuf;
+
+			name = "~/.icons/Moka/stash/" + name + ".png";
+			string home = Environment.GetFolderPath (Environment.SpecialFolder.Personal);
+			name = name.Replace ("~", home);
+			GLib.File iconFile = (name.StartsWith ("/")) ? FileFactory.NewForPath (name) : FileFactory.NewForUri (name);
+			try {
+				if (width <= 0 || height <= 0)
+					pixbuf = new Pixbuf (iconFile.Path);
+				else
+					pixbuf = new Pixbuf (iconFile.Path, width, height, true);
+				Log<DrawingService>.Warn ("YAY! file '" + iconFile.Path + "' was ok! ");
+			} catch (Exception e) {
+				Log<DrawingService>.Warn ("Error loading icon from file '" + iconFile.Path + "': " + e.Message);
+				Log<DrawingService>.Debug (e.StackTrace);
+				pixbuf = null;
+			}
+			return pixbuf;
+		}
+		
 		
 		Pixbuf IconFromTheme (string name, int size, IconTheme theme)
 		{
