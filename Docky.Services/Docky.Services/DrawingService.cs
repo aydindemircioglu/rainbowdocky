@@ -133,18 +133,21 @@ namespace Docky.Services
 					if (pixbuf != null)
 						break;
 				}
-				
-				
-				// ignore the shit, just load them directly?
-				pixbuf = IconFromLocalFileStash (name, width, height);
-				if (pixbuf != null)
-					break;
-// 				if (IconIsFile (name)) {
-// 					Log<DrawingService>.Info ("Icon {0} is file.", names);
-// 					pixbuf = IconFromFile (name, width, height);
-// 					if (pixbuf != null)
-// 						break;
-// 				}
+
+				// is it a true path probably?
+				if (name.Contains ("usr/local")) {
+					if (IconIsFile (name)) {
+						Log<DrawingService>.Info ("Icon {0} is file.", names);
+						pixbuf = IconFromFile (name, width, height);
+						if (pixbuf != null)
+							break;
+					}
+				} else {
+					// ignore the shit, just load them directly?
+					pixbuf = IconFromLocalFileStash (name, width, height);
+					if (pixbuf != null)
+						break;
+				}
 				
 				if (width <= 0 || height <= 0)
 					throw new ArgumentException ("Width / Height must be greater than 0 if icon is not a file or embedded resource");
